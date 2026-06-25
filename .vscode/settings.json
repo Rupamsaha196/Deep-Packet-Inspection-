@@ -1,0 +1,25 @@
+{
+  // Java extension source/output paths for the project
+  "java.project.sourcePaths": [
+    "src/main/java"
+  ],
+  "java.project.outputPath": "target/classes",
+  "java.project.referencedLibraries": [],
+
+  // Use Java 17
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "default": true
+    }
+  ],
+
+  // Force output from the Run button to go to the Terminal tab
+  "java.debug.settings.console": "integratedTerminal",
+
+  // Auto-format on save (optional but nice)
+  "editor.formatOnSave": true,
+
+  // Show run/debug buttons inline above main()
+  "java.inlayHints.parameterNames.enabled": "all"
+}
