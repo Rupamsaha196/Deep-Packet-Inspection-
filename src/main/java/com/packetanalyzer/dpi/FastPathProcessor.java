@@ -252,6 +252,7 @@ public class FastPathProcessor {
                 case PORT   -> "Port "   + r.detail;
             };
             System.out.println("[FP" + fpId + "] BLOCKED packet: " + detail);
+            com.packetanalyzer.DashboardApp.addLog("Blocked " + detail);
             connTracker.blockConnection(conn);
             return PacketAction.DROP;
         }

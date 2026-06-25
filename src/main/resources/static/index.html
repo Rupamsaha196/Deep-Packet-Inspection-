@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packet Analyzer - Live Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-area">
+                <div class="pulse-dot"></div>
+                <h1>Live DPI Engine</h1>
+            </div>
+            <div class="status-badge">Capturing Traffic...</div>
+        </header>
+
+        <!-- Top Metrics Cards -->
+        <section class="metrics-grid">
+            <div class="metric-card glass">
+                <h3>Total Packets</h3>
+                <p id="total-packets" class="metric-value">0</p>
+            </div>
+            <div class="metric-card glass">
+                <h3>Total Bytes</h3>
+                <p id="total-bytes" class="metric-value">0 B</p>
+            </div>
+            <div class="metric-card glass">
+                <h3>Active Connections</h3>
+                <p id="active-conns" class="metric-value">0</p>
+            </div>
+            <div class="metric-card glass danger">
+                <h3>Blocked Packets</h3>
+                <p id="blocked-packets" class="metric-value">0</p>
+            </div>
+        </section>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Chart Section -->
+            <section class="chart-section glass">
+                <h2>Protocol Breakdown</h2>
+                <div class="chart-container">
+                    <canvas id="protocolChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Live Logs Section -->
+            <section class="logs-section glass">
+                <h2>Recent Blocked Activity</h2>
+                <div id="logs-container" class="logs-container">
+                    <!-- Logs injected via JS -->
+                    <div class="log-entry empty-log">No blocked packets yet...</div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

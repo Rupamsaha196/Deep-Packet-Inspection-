@@ -10,6 +10,7 @@ import java.io.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Top-level DPI engine orchestrator.
@@ -244,6 +245,34 @@ public class DPIEngine {
 
         System.out.println("[Reader] Finished reading " + packetId + " packets");
         reader.close();
+    }
+
+    private final AtomicLong livePacketId = new AtomicLong(0);
+
+    /**
+     * Processes a single raw packet instantly. Used for live traffic capture.
+     */
+    public void processLivePacket(RawPacket raw) {
+        ParsedPacket parsed = new ParsedPacket();
+        if (!PacketParser.parse(raw, parsed)) return;
+
+        // Only process IP + TCP/UDP packets
+        if (!parsed.hasIp || (!parsed.hasTcp && !parsed.hasUdp)) return;
+
+        PacketJob job = createPacketJob(raw, parsed, livePacketId.getAndIncrement());
+
+        stats.totalPackets.incrementAndGet();
+        stats.totalBytes.addAndGet(raw.data.length);
+        if (parsed.hasTcp) stats.tcpPackets.incrementAndGet();
+        else               stats.udpPackets.incrementAndGet();
+
+        // Send to the correct LB
+        LoadBalancer lb = lbManager.getLBForPacket(job.tuple);
+        try {
+            lb.getInputQueue().put(job);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     // -------------------------------------------------------------------------
