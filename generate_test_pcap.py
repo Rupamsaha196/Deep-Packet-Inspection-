@@ -101,7 +101,7 @@ def create_tls_client_hello(sni):
     
     client_hello_body = client_version + random_bytes + session_id + cipher_suites + compression + extensions_data
     
-    # Handshake header
+    # Handshake headeris
     handshake = struct.pack('B', 0x01)  # Client Hello
     handshake += struct.pack('>I', len(client_hello_body))[1:]  # 3-byte length
     handshake += client_hello_body
